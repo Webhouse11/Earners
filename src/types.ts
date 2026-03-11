@@ -5,7 +5,8 @@ export type Category =
   | "Affiliate Marketing" 
   | "Blogging & SEO" 
   | "Online Business Ideas" 
-  | "Passive Income";
+  | "Passive Income"
+  | "Apps & Platforms";
 
 export interface Post {
   id: string;

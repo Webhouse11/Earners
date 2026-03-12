@@ -15,6 +15,7 @@ export default function Home() {
       <Helmet>
         <title>Earners Hub – Your Gateway to Online Income Opportunities</title>
         <meta name="description" content="Discover legitimate ways to make money online with AI tools, freelancing, affiliate marketing, and passive income strategies." />
+        <meta name="22b6e0c7b12e6e66c75a59257ee9c424b3b7a2cb" content="22b6e0c7b12e6e66c75a59257ee9c424b3b7a2cb" />
       </Helmet>
 
       {/* Hero Section */}

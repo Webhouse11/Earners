@@ -1,12 +1,15 @@
 import { useParams, Link } from 'react-router-dom';
+import { cn } from '../lib/utils';
 import { POSTS } from '../data/posts';
 import Sidebar from '../components/Sidebar';
 import { Helmet } from 'react-helmet-async';
 import Markdown from 'react-markdown';
-import { Clock, Calendar, User, Share2, MessageCircle, Bookmark, ChevronRight, Home, Facebook, Twitter, Linkedin } from 'lucide-react';
+import { Clock, Calendar, User, Share2, MessageCircle, Bookmark, ChevronRight, Home, Facebook, Twitter, Linkedin, Send, Link as LinkIcon, Check } from 'lucide-react';
+import { useState } from 'react';
 
 export default function BlogPost() {
   const { slug } = useParams();
+  const [copied, setCopied] = useState(false);
   const post = POSTS.find(p => p.slug === slug);
 
   if (!post) {
@@ -17,6 +20,21 @@ export default function BlogPost() {
       </div>
     );
   }
+
+  const shareUrl = window.location.href;
+  const shareTitle = post.title;
+
+  const shareHandlers = {
+    facebook: () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank'),
+    twitter: () => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTitle)}&url=${encodeURIComponent(shareUrl)}`, '_blank'),
+    linkedin: () => window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(shareTitle)}`, '_blank'),
+    whatsapp: () => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareTitle + ' ' + shareUrl)}`, '_blank'),
+    copy: () => {
+      navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
 
   const relatedPosts = POSTS.filter(p => p.category === post.category && p.id !== post.id).slice(0, 3);
 
@@ -78,10 +96,44 @@ export default function BlogPost() {
             <div className="lg:col-span-2">
               {/* Social Share Sticky */}
               <div className="flex lg:block lg:sticky lg:top-32 lg:-ml-20 mb-8 lg:mb-0 space-x-4 lg:space-x-0 lg:space-y-4 float-left lg:float-none">
-                <button className="p-3 bg-gray-50 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"><Facebook className="w-5 h-5" /></button>
-                <button className="p-3 bg-gray-50 text-gray-400 hover:text-blue-400 hover:bg-blue-50 rounded-xl transition-all"><Twitter className="w-5 h-5" /></button>
-                <button className="p-3 bg-gray-50 text-gray-400 hover:text-blue-700 hover:bg-blue-50 rounded-xl transition-all"><Linkedin className="w-5 h-5" /></button>
-                <button className="p-3 bg-gray-50 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-all"><Share2 className="w-5 h-5" /></button>
+                <button 
+                  onClick={shareHandlers.facebook}
+                  className="p-3 bg-gray-50 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                  title="Share on Facebook"
+                >
+                  <Facebook className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={shareHandlers.twitter}
+                  className="p-3 bg-gray-50 text-gray-400 hover:text-blue-400 hover:bg-blue-50 rounded-xl transition-all"
+                  title="Share on Twitter"
+                >
+                  <Twitter className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={shareHandlers.linkedin}
+                  className="p-3 bg-gray-50 text-gray-400 hover:text-blue-700 hover:bg-blue-50 rounded-xl transition-all"
+                  title="Share on LinkedIn"
+                >
+                  <Linkedin className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={shareHandlers.whatsapp}
+                  className="p-3 bg-gray-50 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-xl transition-all"
+                  title="Share on WhatsApp"
+                >
+                  <Send className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={shareHandlers.copy}
+                  className={cn(
+                    "p-3 rounded-xl transition-all",
+                    copied ? "bg-green-600 text-white" : "bg-gray-50 text-gray-400 hover:text-gray-900 hover:bg-gray-100"
+                  )}
+                  title="Copy Link"
+                >
+                  {copied ? <Check className="w-5 h-5" /> : <LinkIcon className="w-5 h-5" />}
+                </button>
               </div>
 
               {/* Main Content */}

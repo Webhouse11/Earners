@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Search, Menu, X, TrendingUp, DollarSign, Cpu, Briefcase, Share2, PenTool, Lightbulb, Wallet } from 'lucide-react';
+import { Search, Menu, X, TrendingUp, DollarSign, Cpu, Briefcase, Share2, PenTool, Lightbulb, Wallet, Globe, ChevronDown } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { CATEGORIES } from '../data/posts';
 
@@ -11,7 +11,8 @@ const categoryIcons: Record<string, React.ReactNode> = {
   "Affiliate Marketing": <Share2 className="w-4 h-4" />,
   "Blogging & SEO": <PenTool className="w-4 h-4" />,
   "Online Business Ideas": <Lightbulb className="w-4 h-4" />,
-  "Passive Income": <Wallet className="w-4 h-4" />
+  "Passive Income": <Wallet className="w-4 h-4" />,
+  "Apps & Platforms": <Globe className="w-4 h-4" />
 };
 
 export default function Navbar() {
@@ -36,27 +37,26 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
-            {CATEGORIES.slice(0, 4).map((cat) => (
-              <NavLink
-                key={cat}
-                to={`/category/${cat.toLowerCase().replace(/ /g, '-')}`}
-                className={({ isActive }) =>
-                  cn(
-                    "text-sm font-medium transition-colors hover:text-blue-600",
-                    isActive ? "text-blue-600" : "text-gray-600"
-                  )
-                }
-              >
-                {cat}
-              </NavLink>
-            ))}
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                cn(
+                  "text-sm font-medium transition-colors hover:text-blue-600",
+                  isActive ? "text-blue-600" : "text-gray-600"
+                )
+              }
+            >
+              Home
+            </NavLink>
+            
             <div className="relative group">
-              <button className="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center">
-                More Categories
+              <button className="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center py-8">
+                Categories
+                <ChevronDown className="ml-1 w-4 h-4" />
               </button>
-              <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-100 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+              <div className="absolute left-0 mt-0 w-64 bg-white border border-gray-100 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="p-2">
-                  {CATEGORIES.slice(4).map((cat) => (
+                  {CATEGORIES.map((cat) => (
                     <Link
                       key={cat}
                       to={`/category/${cat.toLowerCase().replace(/ /g, '-')}`}
@@ -69,6 +69,30 @@ export default function Navbar() {
                 </div>
               </div>
             </div>
+
+            <NavLink
+              to="/about"
+              className={({ isActive }) =>
+                cn(
+                  "text-sm font-medium transition-colors hover:text-blue-600",
+                  isActive ? "text-blue-600" : "text-gray-600"
+                )
+              }
+            >
+              About Us
+            </NavLink>
+
+            <NavLink
+              to="/contact"
+              className={({ isActive }) =>
+                cn(
+                  "text-sm font-medium transition-colors hover:text-blue-600",
+                  isActive ? "text-blue-600" : "text-gray-600"
+                )
+              }
+            >
+              Contact
+            </NavLink>
           </div>
 
           {/* Search and Mobile Menu Button */}
@@ -108,6 +132,13 @@ export default function Navbar() {
       {isOpen && (
         <div className="lg:hidden bg-white border-b border-gray-100">
           <div className="px-4 pt-2 pb-6 space-y-1">
+            <Link to="/" onClick={() => setIsOpen(false)} className="block px-4 py-3 text-base font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-xl">Home</Link>
+            <Link to="/about" onClick={() => setIsOpen(false)} className="block px-4 py-3 text-base font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-xl">About Us</Link>
+            
+            <div className="pt-4 pb-2">
+              <span className="px-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Categories</span>
+            </div>
+            
             {CATEGORIES.map((cat) => (
               <Link
                 key={cat}
@@ -119,9 +150,9 @@ export default function Navbar() {
                 <span>{cat}</span>
               </Link>
             ))}
+            
             <div className="pt-4 border-t border-gray-100 mt-4">
-              <Link to="/about" className="block px-4 py-3 text-base font-medium text-gray-600">About Us</Link>
-              <Link to="/contact" className="block px-4 py-3 text-base font-medium text-gray-600">Contact</Link>
+              <Link to="/contact" onClick={() => setIsOpen(false)} className="block px-4 py-3 text-base font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-xl">Contact</Link>
             </div>
           </div>
         </div>

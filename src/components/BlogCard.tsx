@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Clock, User, ArrowRight } from 'lucide-react';
+import { Clock, User, ArrowRight, Share2 } from 'lucide-react';
 import { Post } from '../types';
 import { cn } from '../lib/utils';
 
@@ -9,6 +9,21 @@ interface BlogCardProps {
 }
 
 export default function BlogCard({ post, variant = 'vertical' }: BlogCardProps) {
+  const handleShare = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (navigator.share) {
+      navigator.share({
+        title: post.title,
+        text: post.excerpt,
+        url: `${window.location.origin}/post/${post.slug}`,
+      });
+    } else {
+      // Fallback: Copy to clipboard
+      navigator.clipboard.writeText(`${window.location.origin}/post/${post.slug}`);
+      alert('Link copied to clipboard!');
+    }
+  };
   if (variant === 'horizontal') {
     return (
       <Link to={`/post/${post.slug}`} className="group flex flex-col md:flex-row gap-6 bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100">
@@ -35,8 +50,15 @@ export default function BlogCard({ post, variant = 'vertical' }: BlogCardProps) 
               <img src={post.author.avatar} alt={post.author.name} className="w-8 h-8 rounded-full" referrerPolicy="no-referrer" />
               <span className="text-xs font-medium text-gray-700">{post.author.name}</span>
             </div>
-            <div className="flex items-center text-gray-400 text-xs space-x-3">
+            <div className="flex items-center text-gray-400 text-xs space-x-4">
               <span className="flex items-center"><Clock className="w-3 h-3 mr-1" /> {post.readTime}</span>
+              <button 
+                onClick={handleShare}
+                className="p-2 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                title="Share Post"
+              >
+                <Share2 className="w-3.5 h-3.5" />
+              </button>
             </div>
           </div>
         </div>
@@ -87,7 +109,16 @@ export default function BlogCard({ post, variant = 'vertical' }: BlogCardProps) 
             <img src={post.author.avatar} alt={post.author.name} className="w-6 h-6 rounded-full" referrerPolicy="no-referrer" />
             <span className="text-[11px] font-semibold text-gray-600">{post.author.name}</span>
           </div>
-          <span className="text-[11px] text-gray-400 font-medium">{post.date}</span>
+          <div className="flex items-center space-x-3">
+            <span className="text-[11px] text-gray-400 font-medium">{post.date}</span>
+            <button 
+              onClick={handleShare}
+              className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+              title="Share Post"
+            >
+              <Share2 className="w-3 h-3" />
+            </button>
+          </div>
         </div>
       </div>
     </Link>

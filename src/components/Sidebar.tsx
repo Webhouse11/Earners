@@ -1,5 +1,6 @@
 import { POSTS } from '../data/posts';
 import BlogCard from './BlogCard';
+import ExternalNews from './ExternalNews';
 import { TrendingUp, Award, ExternalLink } from 'lucide-react';
 
 export default function Sidebar() {
@@ -8,6 +9,9 @@ export default function Sidebar() {
 
   return (
     <aside className="space-y-10">
+      {/* External News Feed */}
+      <ExternalNews />
+
       {/* Ad Space */}
       <div className="bg-gray-50 border border-dashed border-gray-300 rounded-2xl p-6 text-center">
         <span className="text-[10px] uppercase tracking-widest text-gray-400 mb-4 block">Advertisement</span>

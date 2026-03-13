@@ -1,7 +1,8 @@
+import { Link } from 'react-router-dom';
 import { POSTS } from '../data/posts';
 import BlogCard from './BlogCard';
-import ExternalNews from './ExternalNews';
-import { TrendingUp, Award, ExternalLink } from 'lucide-react';
+import LatestArticles from './LatestArticles';
+import { TrendingUp, Award, MessageSquare } from 'lucide-react';
 
 export default function Sidebar() {
   const trendingPosts = POSTS.filter(p => p.trending).slice(0, 4);
@@ -9,8 +10,8 @@ export default function Sidebar() {
 
   return (
     <aside className="space-y-10">
-      {/* External News Feed */}
-      <ExternalNews />
+      {/* Internal Latest Articles Feed */}
+      <LatestArticles />
 
       {/* Ad Space */}
       <div className="bg-gray-50 border border-dashed border-gray-300 rounded-2xl p-6 text-center">
@@ -18,9 +19,9 @@ export default function Sidebar() {
         <div className="aspect-[300/250] bg-gray-200 rounded-lg flex items-center justify-center mb-4">
           <p className="text-gray-500 text-sm font-medium">Your Ad Here</p>
         </div>
-        <button className="text-xs text-blue-600 font-bold flex items-center justify-center w-full hover:underline">
-          Advertise with us <ExternalLink className="w-3 h-3 ml-1" />
-        </button>
+        <Link to="/contact" className="text-xs text-blue-600 font-bold flex items-center justify-center w-full hover:underline">
+          Advertise with us <MessageSquare className="w-3 h-3 ml-1" />
+        </Link>
       </div>
 
       {/* Trending Section */}

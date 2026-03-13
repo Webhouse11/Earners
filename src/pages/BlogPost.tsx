@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { cn } from '../lib/utils';
 import { POSTS } from '../data/posts';
 import Sidebar from '../components/Sidebar';
+import RelatedPostsSlider from '../components/RelatedPostsSlider';
 import { Helmet } from 'react-helmet-async';
 import Markdown from 'react-markdown';
 import { Clock, Calendar, User, Share2, MessageCircle, Bookmark, ChevronRight, Home, Facebook, Twitter, Linkedin, Send, Link as LinkIcon, Check } from 'lucide-react';
@@ -174,18 +175,7 @@ export default function BlogPost() {
               {/* Related Posts */}
               <div className="mt-20">
                 <h3 className="text-2xl font-black text-gray-900 mb-8">Related Articles</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {relatedPosts.map(p => (
-                    <div key={p.id} className="group cursor-pointer">
-                      <Link to={`/post/${p.slug}`}>
-                        <div className="aspect-video rounded-2xl overflow-hidden mb-4">
-                          <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
-                        </div>
-                        <h4 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">{p.title}</h4>
-                      </Link>
-                    </div>
-                  ))}
-                </div>
+                <RelatedPostsSlider posts={POSTS.filter(p => p.category === post.category && p.id !== post.id)} />
               </div>
 
               {/* Comments Section Placeholder */}
